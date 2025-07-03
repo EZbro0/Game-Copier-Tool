@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neon Message Sender</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #00fff7;
+      overflow: hidden;
+    }
+    .container {
+      background: rgba(0,0,0,0.6);
+      border: 2px solid #00fff7;
+      box-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7, 0 0 60px #00fff7;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+    .container h1 {
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7;
+    }
+    .container input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      background: #1a1a1a;
+      color: #00fff7;
+      box-shadow: 0 0 10px #00fff7 inset;
+      outline: none;
+    }
+    .container button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 10px;
+      background: #00fff7;
+      color: #000;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7, 0 0 60px #00fff7;
+    }
+    .container button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #00fff7, 0 0 60px #00fff7, 0 0 90px #00fff7;
+    }
+    .success, .error {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .success {
+      color: #39ff14;
+      text-shadow: 0 0 10px #39ff14;
+    }
+    .error {
+      color: #ff4d4d;
+      text-shadow: 0 0 10px #ff4d4d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💬 Send Neon Message</h1>
+    <input type="text" id="message" placeholder="Type your message here">
+    <button onclick="sendMessage()">Send</button>
+    <div class="success" id="success"></div>
+    <div class="error" id="error"></div>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const msg = document.getElementById("message").value;
+      const success = document.getElementById("success");
+      const error = document.getElementById("error");
+      success.textContent = "";
+      error.textContent = "";
+
+      if (msg.trim() === "") {
+        error.textContent = "Please type a message.";
+        return;
+      }
+
+      fetch("https://discord.com/api/webhooks/1390161850779566214/LO_9H9Pn1n79bDhp9DkKBmVM8n_rdARD0ImPoBmuy2HAKbxHSosnmw7g2TvACfgnfJ6O", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ content: msg })
+      })
+      .then(response => {
+        if (response.ok) {
+          success.textContent = "✅ Message sent successfully!";
+          document.getElementById("message").value
